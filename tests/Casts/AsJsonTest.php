@@ -40,10 +40,10 @@ class AsJsonTest extends TestCase
         ]);
 
         Schema::table('users', static function (Blueprint $table): void {
-            $table->json('options');
+            $table->json('options')->default('');
             $table->json('nullable_options')->nullable();
 
-            $table->json('encrypted_options');
+            $table->json('encrypted_options')->default('');
             $table->json('nullable_encrypted_options')->nullable();
 
             $table->json('castable')->nullable();
