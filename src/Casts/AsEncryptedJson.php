@@ -57,6 +57,8 @@ class AsEncryptedJson extends AsJson
      */
     protected function encrypter(Model $model): Encrypter
     {
-        return $model::$encrypter ?? app('encrypter');
+        return isset($model::$encrypter)
+            ? $model::$encrypter
+            : app('encrypter');
     }
 }

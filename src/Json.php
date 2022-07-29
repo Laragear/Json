@@ -49,7 +49,7 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
      * @noinspection MagicMethodsValidityInspection
      * @noinspection PhpMissingParentConstructorInspection
      */
-    public function __construct(Arrayable|iterable $parameters = [])
+    final public function __construct(Arrayable|iterable $parameters = [])
     {
         if ($parameters instanceof Arrayable) {
             $parameters = $parameters->toArray();

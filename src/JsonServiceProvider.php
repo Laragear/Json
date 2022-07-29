@@ -18,7 +18,7 @@ class JsonServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Request::macro('getJson', function (string|int $key = null, mixed $default = null): mixed {
-            /** @extends \Illuminate\Http\Request */
+            /** @var \Illuminate\Http\Request $this */
 
             // This will instance the JSON property of the Request to avoid duplicating the
             // JSON data, or replacing the JSON if the developer has edited it. Since the
