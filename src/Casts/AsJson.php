@@ -28,7 +28,7 @@ class AsJson implements CastsAttributes
      * @param  string  $key
      * @param  mixed  $value
      * @param  array  $attributes
-     * @return array{null|\Laragear\Json\Json}|null
+     * @return array<string, \Laragear\Json\Json|null>
      */
     public function set($model, string $key, $value, array $attributes): ?array
     {
