@@ -57,8 +57,10 @@ class AsEncryptedJson extends AsJson
      */
     protected function encrypter(Model $model): Encrypter
     {
-        return isset($model::$encrypter)
-            ? $model::$encrypter
-            : app('encrypter');
+        if (isset($model::$encrypter) && $model::$encrypter instaceof Encrypter) {
+            return $model::$encrypter;
+        }
+        
+        return app('encrypter');
     }
 }
