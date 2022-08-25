@@ -19,9 +19,9 @@ $json->set('bar.quz', 'quz');
 echo $json->foo; // "quz"
 ```
 
-## Keep this package free
+## Become a sponsor
 
-[![Patreon](.assets/patreon.png)](https://patreon.com/packagesforlaravel)[![Ko-fi](.assets/ko-fi.png)](https://ko-fi.com/DarkGhostHunter)[![Buymeacoffee](.assets/buymeacoffee.png)](https://www.buymeacoffee.com/darkghosthunter)[![PayPal](.assets/paypal.png)](https://www.paypal.com/paypalme/darkghosthunter)
+[![](.github/assets/support.png)](https://github.com/sponsors/DarkGhostHunter)
 
 Your support allows me to keep this package free, up-to-date and maintainable. Alternatively, you can **[spread the word!](http://twitter.com/share?text=I%20am%20using%20this%20cool%20PHP%20package&url=https://github.com%2FLaragear%2FJson&hashtags=PHP,Laravel)**
 
