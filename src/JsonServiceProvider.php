@@ -18,20 +18,22 @@ class JsonServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Request::macro('getJson', function (string|int $key = null, mixed $default = null): mixed {
-            /** @extends \Illuminate\Http\Request */
+            /** @var \Illuminate\Http\Request $this */
 
             // This will instance the JSON property of the Request to avoid duplicating the
             // JSON data, or replacing the JSON if the developer has edited it. Since the
             // Json class extends ParameterBag, there isn't any incompatibility risks.
+            // @phpstan-ignore-next-line
             if (! $this->json instanceof Json) {
+                // @phpstan-ignore-next-line
                 $this->json = $this->json instanceof ParameterBag
+                    // @phpstan-ignore-next-line
                     ? Json::make($this->json->all())
                     : Json::fromJson($this->getContent());
             }
 
-            return $key === null
-                ? $this->json
-                : $this->json->get($key, $default);
+            // @phpstan-ignore-next-line
+            return $key === null ? $this->json : $this->json->get($key, $default);
         });
 
         if ($this->app->runningInConsole()) {

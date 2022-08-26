@@ -49,7 +49,7 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
      * @noinspection MagicMethodsValidityInspection
      * @noinspection PhpMissingParentConstructorInspection
      */
-    public function __construct(Arrayable|iterable $parameters = [])
+    final public function __construct(Arrayable|iterable $parameters = [])
     {
         if ($parameters instanceof Arrayable) {
             $parameters = $parameters->toArray();
@@ -205,6 +205,7 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
     {
         $segment = &$this->parameters;
 
+        // @phpstan-ignore-next-line
         $keys = explode('.', $key) ?: [$key];
 
         foreach ($keys as $index => $name) {
@@ -395,7 +396,7 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
     /**
      * Whether an offset exists.
      *
-     * @param  mixed
+     * @param  mixed  $offset
      * @return bool
      */
     public function offsetExists(mixed $offset): bool
