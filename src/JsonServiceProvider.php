@@ -11,11 +11,11 @@ class JsonServiceProvider extends ServiceProvider
     public const STUBS = __DIR__.'/../.stubs/json.php';
 
     /**
-     * Bootstrap the application services.
+     * Register any application services.
      *
      * @return void
      */
-    public function boot(): void
+    public function register(): void
     {
         Request::macro('getJson', function (string|int $key = null, mixed $default = null): mixed {
             /** @var \Illuminate\Http\Request $this */
