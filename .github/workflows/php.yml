@@ -104,7 +104,7 @@ jobs:
         uses: "ramsey/composer-install@v2"
 
       - name: "Execute static analysis"
-        run: "composer exec -- phpstan analyze -l 5 src/"
+        run: "phpstan analyze -l 5 src/"
 
   exported_files:
     name: "4️⃣ Exported files"
