@@ -57,7 +57,6 @@ class AsEncryptedJson extends AsJson
      */
     protected function encrypter(Model $model): Encrypter
     {
-        // @phpstan-ignore-next-line
         return $model::$encrypter ?? app('encrypter');
     }
 }
