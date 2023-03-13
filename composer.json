@@ -3,7 +3,7 @@
     "description": "Easily retrieve and manipulate `Json` across your application.",
     "type": "library",
     "license": "MIT",
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true,
     "keywords": [
         "laravel",
@@ -22,13 +22,12 @@
         "issues": "https://github.com/Laragear/Json/issues"
     },
     "require": {
-        "php": "8.*",
-        "laragear/compare": "^1.1",
-        "illuminate/support": "9.*|10.*",
-        "illuminate/http": "9.*|10.*"
+        "php": "^8.1",
+        "illuminate/support": "10.*|11.*",
+        "illuminate/http": "10.*|11.*"
     },
     "require-dev": {
-        "orchestra/testbench": "^7.22|8.*"
+        "orchestra/testbench": "8.*|9.*"
     },
     "autoload": {
         "psr-4": {

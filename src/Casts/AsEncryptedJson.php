@@ -10,13 +10,7 @@ use function app;
 class AsEncryptedJson extends AsJson
 {
     /**
-     * Transform the attribute from the underlying model values.
-     *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  string  $key
-     * @param  string|null  $value
-     * @param  array  $attributes
-     * @return \Laragear\Json\Json|null
+     * @inheritDoc
      */
     public function get($model, string $key, $value, array $attributes): ?Json
     {
@@ -28,13 +22,7 @@ class AsEncryptedJson extends AsJson
     }
 
     /**
-     * Transform the attribute to its underlying model values.
-     *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  string  $key
-     * @param  mixed  $value
-     * @param  array  $attributes
-     * @return array|null
+     * @inheritDoc
      */
     public function set($model, string $key, $value, array $attributes): ?array
     {
@@ -51,9 +39,6 @@ class AsEncryptedJson extends AsJson
 
     /**
      * Returns the encrypter used by the model.
-     *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @return \Illuminate\Contracts\Encryption\Encrypter
      */
     protected function encrypter(Model $model): Encrypter
     {
