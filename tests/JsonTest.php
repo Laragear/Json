@@ -67,15 +67,6 @@ class JsonTest extends TestCase
         static::assertSame('corge', $this->json->get('baz.quuz.quux'));
     }
 
-    public function test_set_no_overwrite(): void
-    {
-        $this->json->set('foo', 'quz', false);
-        static::assertSame('bar', $this->json->get('foo'));
-
-        $this->json->set('baz.quuz.quux', 'corge', false);
-        static::assertSame('fred', $this->json->get('baz.quuz.quux'));
-    }
-
     public function test_set_many(): void
     {
         $this->json->setMany([
@@ -83,29 +74,18 @@ class JsonTest extends TestCase
             'baz.quuz.quux' => 'corge',
             'fred' => 'thud'
         ]);
+
         static::assertSame('quz', $this->json->get('foo'));
         static::assertSame('corge', $this->json->get('baz.quuz.quux'));
         static::assertSame('thud', $this->json->get('fred'));
     }
 
-    public function test_set_many_no_overwrite(): void
-    {
-        $this->json->setMany([
-            'foo' => 'quz',
-            'baz.quuz.quux' => 'corge',
-            'fred' => 'thud'
-        ], false);
-        static::assertSame('bar', $this->json->get('foo'));
-        static::assertSame('fred', $this->json->get('baz.quuz.quux'));
-        static::assertSame('thud', $this->json->get('fred'));
-    }
-
     public function test_fill(): void
     {
-        $this->json->fill('foo', 'quz', false);
+        $this->json->fill('foo', 'quz');
         static::assertSame('bar', $this->json->get('foo'));
 
-        $this->json->fill('baz.quuz.quux', 'corge', false);
+        $this->json->fill('baz.quuz.quux', 'corge');
         static::assertSame('fred', $this->json->get('baz.quuz.quux'));
     }
 
@@ -397,7 +377,7 @@ class JsonTest extends TestCase
     {
         $this->json->add(['foo' => 'quz']);
 
-        static::assertSame(static::DATA, $this->json->all());
+        static::assertSame(array_merge(static::DATA, ['foo' => 'quz']), $this->json->all());
     }
 
     public function test_parameter_bag_remove(): void

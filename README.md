@@ -23,12 +23,11 @@ echo $json->foo; // "quz"
 
 [![](.github/assets/support.png)](https://github.com/sponsors/DarkGhostHunter)
 
-Your support allows me to keep this package free, up-to-date and maintainable. Alternatively, you can **[spread the word!](http://twitter.com/share?text=I%20am%20using%20this%20cool%20PHP%20package&url=https://github.com%2FLaragear%2FJson&hashtags=PHP,Laravel)**
+Your support allows me to keep this package free, up-to-date and maintainable. Alternatively, you can **[spread the word!](http://twitter.com/share?text=I%20am%20using%20this%20cool%20PHP%20package&url=https://github.com%2FLaragear%2FJson&hashtags=PHP,Laravel)**.
 
 ## Requirements
 
-* PHP 8 or later
-* Laravel 9, 10 or later
+* Laravel 10 or later
 
 ## Installation
 
@@ -71,6 +70,8 @@ public function data(Request $request)
 }
 ```
 
+> [!TIP]
+>
 > You can still use the `json()` method to retrieve the JSON data as a `ParameterBag` or a key value.
 
 ## As a HTTP Response
@@ -139,7 +140,6 @@ The `Json` instance contains multiple helpful methods to make dealing with JSON 
 | `unset($key)`                                  | Removes (forgets) a key in "dot" notation from the JSON.                                     |
 | `isSet($key)`                                  | Check if a key in "dot" notation exists and is not `null`.                                   |
 | `isNotSet($key)`                               | Check if a key in "dot" notation doesn't exists or is not `null`.                            |
-| `is($key)`                                     | Creates a condition to evaluate.                                                             |                                     |
 | `isEmpty()`                                    | Check if the JSON data is empty.                                                             |
 | `isNotEmpty()`                                 | Check if the JSON data is not empty.                                                         |
 | `keys()`                                       | Returns an array of all the root-level keys of the JSON.                                     |
@@ -158,8 +158,6 @@ When dealing with JSON attributes in models, you will note that is really cumber
 Just add one of these to [your model casts](https://laravel.com/docs/10.x/eloquent-mutators#custom-casts).
 
 ```php
-<?php
- 
 namespace App\Models;
  
 use Illuminate\Database\Eloquent\Model;
@@ -200,16 +198,6 @@ $user->secure_options = [
 
 // You can use the Json instance like a normal monday.
 $user->secure_options->get('visa.last_4'); // "1234" 
-```
-
-## [Conditions](https://github.com/Laragear/Compare)
-
-Condition handling through the `is()` method, which is handled by the [Laragear Compare package](https://github.com/Laragear/Compare).
-
-```php
-if ($json->is('apples')->not->exactly('tasty')) {
-    return 'The apples are not tasty!';
-}
 ```
 
 ## PhpStorm stubs

@@ -12,7 +12,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Tappable;
 use JsonSerializable;
-use Laragear\Compare\Comparable;
 use Stringable;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use function array_key_exists;
@@ -23,6 +22,8 @@ use function count;
 use function data_get;
 use function data_set;
 use function explode;
+use function func_get_args;
+use function func_num_args;
 use function is_array;
 use function is_object;
 use function json_decode;
@@ -33,24 +34,17 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 {
     use Conditionable;
     use Tappable;
-    use Comparable;
-
-    /**
-     * The JSON "parameters".
-     *
-     * @var array
-     */
-    protected $parameters = [];
 
     /**
      * Create a new Json instance.
      *
-     * @param  \Illuminate\Contracts\Support\Arrayable|iterable  $parameters
      * @noinspection MagicMethodsValidityInspection
      * @noinspection PhpMissingParentConstructorInspection
      */
     final public function __construct(Arrayable|iterable $parameters = [])
     {
+        $this->parameters = [];
+
         if ($parameters instanceof Arrayable) {
             $parameters = $parameters->toArray();
         }
@@ -62,10 +56,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 
     /**
      * Returns a JSON value in "dot" notation.
-     *
-     * @param  array|string|int|null  $key
-     * @param  mixed|null  $default
-     * @return mixed
      */
     public function get(array|string|int|null $key, mixed $default = null): mixed
     {
@@ -74,10 +64,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 
     /**
      * Returns many values of the JSON as a single array.
-     *
-     * @param  array  $keys
-     * @param  mixed|null  $default
-     * @return array
      */
     public function getMany(array $keys, mixed $default = null): array
     {
@@ -92,30 +78,21 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 
     /**
      * Sets a JSON value in "dot" notation.
-     *
-     * @param  array|string|int  $key
-     * @param  mixed  $value
-     * @param  bool  $overwrite
-     * @return $this
      */
-    public function set(array|string|int $key, mixed $value, bool $overwrite = true): static
+    public function set(string $key, mixed $value): void
     {
-        data_set($this->parameters, $key, $value, $overwrite);
-
-        return $this;
+        data_set($this->parameters, $key, $value);
     }
 
     /**
      * Sets many JSON values in "dot" notation.
      *
-     * @param  array  $keys
-     * @param  bool  $overwrite
      * @return $this
      */
-    public function setMany(array $keys, bool $overwrite = true): static
+    public function setMany(array $keys): static
     {
         foreach ($keys as $key => $value) {
-            $this->set($key, $value, $overwrite);
+            $this->set($key, $value);
         }
 
         return $this;
@@ -124,50 +101,49 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
     /**
      * Fills a key with a value when it is not "null".
      *
-     * @param  array|string|int  $key
-     * @param  mixed  $value
      * @return $this
      */
     public function fill(array|string|int $key, mixed $value): static
     {
-        return $this->set($key, $value, false);
+        data_set($this->parameters, $key, $value, false);
+
+        return $this;
     }
 
     /**
      * Fills many keys with values when these are not "null".
      *
-     * @param  array  $array
      * @return $this
      */
-    public function fillMany(array $array): static
+    public function fillMany(array $keys): static
     {
-        return $this->setMany($array, false);
+        foreach ($keys as $key => $value) {
+            $this->fill($key, $value);
+        }
+
+        return $this;
     }
 
     /**
-     * Check if the given keys are defined using "dot" notation.
-     *
-     * @param  string|int  ...$keys
-     * @return bool
+     * Returns true if the parameter is defined.
      */
-    public function has(string|int ...$keys): bool
+    public function has(string $key): bool
     {
+        $key = func_num_args() > 1 ? func_get_args() : [$key];
+
         $missing = (object) [];
 
-        foreach ($keys as $key) {
-            if ($missing === $this->get($key, $missing)) {
+        foreach ($key as $value) {
+            if ($missing === $this->get($value, $missing)) {
                 return false;
             }
         }
 
-        return !empty($keys);
+        return !empty($key);
     }
 
     /**
      * Determine that at least one key is defined using "dot" notation.
-     *
-     * @param  string|int  ...$keys
-     * @return bool
      */
     public function hasAny(string|int ...$keys): bool
     {
@@ -186,9 +162,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 
     /**
      * Check if the given key is not defined using dot notation.
-     *
-     * @param  string|int  $key
-     * @return bool
      */
     public function missing(string|int $key): bool
     {
@@ -198,7 +171,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
     /**
      * Removes a JSON key.
      *
-     * @param  string|int  $key
      * @return $this
      */
     public function forget(string|int $key): static
@@ -234,7 +206,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
     /**
      * Removes a JSON key.
      *
-     * @param  string|int  $key
      * @return $this
      * @codeCoverageIgnore
      */
@@ -245,9 +216,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 
     /**
      * Determine a key is declared and its value is not "null".
-     *
-     * @param  string|int  $key
-     * @return bool
      */
     public function isSet(string|int $key): bool
     {
@@ -256,9 +224,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 
     /**
      * Determine a key is not declared or its value is "null".
-     *
-     * @param  string|int  $key
-     * @return bool
      */
     public function isNotSet(string|int $key): bool
     {
@@ -267,8 +232,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 
     /**
      * Checks if the Json instance has no keys.
-     *
-     * @return bool
      */
     public function isEmpty(): bool
     {
@@ -277,8 +240,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 
     /**
      * Checks if the Json instance has at least one key.
-     *
-     * @return bool
      */
     public function isNotEmpty(): bool
     {
@@ -297,9 +258,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 
     /**
      * Returns an array of only the given root keys.
-     *
-     * @param  string|int  ...$keys
-     * @return array
      */
     public function only(string|int ...$keys): array
     {
@@ -308,9 +266,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 
     /**
      * Returns an array of all the root keys except the issued ones.
-     *
-     * @param  string|int  ...$keys
-     * @return array
      */
     public function except(string|int ...$keys): array
     {
@@ -321,10 +276,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
      * Retrieves a segment of the JSON data as a new Json instance.
      *
      * Non-existent keys will be filled with a default value.
-     *
-     * @param  array|string|int  $segments
-     * @param  mixed|null  $default
-     * @return static
      */
     public function segments(array|string|int $segments, mixed $default = null): static
     {
@@ -339,9 +290,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 
     /**
      * Returns a Json instance as a Collection.
-     *
-     * @param  string|int|null  $key
-     * @return \Illuminate\Support\Collection
      */
     public function collect(string|int $key = null): Collection
     {
@@ -350,9 +298,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 
     /**
      * Dynamically get JSON values.
-     *
-     * @param  string  $name
-     * @return mixed
      */
     public function __get(string $name): mixed
     {
@@ -361,10 +306,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 
     /**
      * Dynamically set JSON values.
-     *
-     * @param  string  $name
-     * @param  mixed  $value
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {
@@ -373,9 +314,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 
     /**
      * Dynamically check a JSON key presence.
-     *
-     * @param  string  $name
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -384,9 +322,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 
     /**
      * Dynamically unset a JSON key.
-     *
-     * @param  string  $name
-     * @return void
      */
     public function __unset(string $name): void
     {
@@ -395,9 +330,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 
     /**
      * Whether an offset exists.
-     *
-     * @param  mixed  $offset
-     * @return bool
      */
     public function offsetExists(mixed $offset): bool
     {
@@ -406,9 +338,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 
     /**
      * Offset to retrieve.
-     *
-     * @param  mixed  $offset
-     * @return mixed
      */
     public function offsetGet(mixed $offset): mixed
     {
@@ -417,10 +346,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 
     /**
      * Offset to set.
-     *
-     * @param  mixed  $offset
-     * @param  mixed  $value
-     * @return void
      */
     public function offsetSet(mixed $offset, mixed $value): void
     {
@@ -429,9 +354,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 
     /**
      * Offset to unset.
-     *
-     * @param  mixed  $offset
-     * @return void
      */
     public function offsetUnset(mixed $offset): void
     {
@@ -440,8 +362,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 
     /**
      * Returns a string representation of the object.
-     *
-     * @return string.
      */
     public function __toString(): string
     {
@@ -450,8 +370,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 
     /**
      * Specify data which should be serialized to JSON.
-     *
-     * @return array
      */
     public function jsonSerialize(): array
     {
@@ -460,8 +378,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 
     /**
      * Get the instance as an array.
-     *
-     * @return array
      */
     public function toArray(): array
     {
@@ -474,7 +390,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
      * Convert the object to its JSON representation.
      *
      * @param  int  $options
-     * @return false|string
      */
     public function toJson($options = 0): false|string
     {
@@ -483,9 +398,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 
     /**
      * Create an HTTP response that represents the object.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function toResponse($request): JsonResponse
     {
@@ -494,9 +406,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 
     /**
      * Create a new Json instance.
-     *
-     * @param  \Illuminate\Contracts\Support\Arrayable|iterable  $json
-     * @return static
      */
     public static function make(Arrayable|iterable $json = []): static
     {
@@ -505,9 +414,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 
     /**
      * Wraps an array into a Json instance.
-     *
-     * @param  self|iterable|null  $json
-     * @return static
      */
     public static function wrap(self|iterable|null $json): static
     {
@@ -516,11 +422,6 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
 
     /**
      * Create a new Json instance from a JSON string.
-     *
-     * @param  string  $json
-     * @param  int  $depth
-     * @param  int  $options
-     * @return static
      */
     public static function fromJson(string $json, int $depth = 512, int $options = 0): static
     {
@@ -536,25 +437,19 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
      */
     public function all(string $key = null): array
     {
-        return $this->get($key);
+        return (array) $this->get($key);
     }
 
     /**
-     * Adds parameters.
-     *
-     * @param  array  $parameters
-     * @return void
+     * @inheritDoc
      */
     public function add(array $parameters = []): void
     {
-        $this->setMany($parameters, false);
+        $this->setMany($parameters);
     }
 
     /**
-     * Removes a parameter.
-     *
-     * @param  string  $key
-     * @return void
+     * @inheritDoc
      */
     public function remove(string $key): void
     {

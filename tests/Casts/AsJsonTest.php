@@ -4,42 +4,24 @@ namespace Tests\Casts;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Auth\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Schema;
 use Laragear\Json\Casts\AsEncryptedJson;
 use Laragear\Json\Casts\AsJson;
 use Laragear\Json\Json;
 use Mockery;
+use Orchestra\Testbench\Attributes\WithMigration;
 use Orchestra\Testbench\TestCase;
 
+#[WithMigration]
 class AsJsonTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected TestUser $user;
 
-    /**
-     * Define database migrations.
-     *
-     * @return void
-     */
     protected function defineDatabaseMigrations(): void
     {
         $this->loadLaravelMigrations();
-    }
 
-    protected function afterRefreshingDatabase(): void
-    {
-        $this->user = new TestUser([
-            'name' => 'john',
-            'email' => 'john@email.com',
-            'password' => 'test_password',
-            'options' => [],
-            'encrypted_options' => [],
-        ]);
-
-        Schema::table('users', static function (Blueprint $table): void {
+        $this->app->make('db.schema')->table('users', static function (Blueprint $table): void {
             $table->json('options')->default('');
             $table->json('nullable_options')->nullable();
 
@@ -48,6 +30,21 @@ class AsJsonTest extends TestCase
 
             $table->json('castable')->nullable();
         });
+    }
+
+    protected function setUp(): void
+    {
+        $this->afterApplicationCreated(function (): void {
+            $this->user = new TestUser([
+                'name' => 'john',
+                'email' => 'john@email.com',
+                'password' => 'test_password',
+                'options' => [],
+                'encrypted_options' => [],
+            ]);
+        });
+
+        parent::setUp();
     }
 
     public function test_caches_json_object_in_model(): void
