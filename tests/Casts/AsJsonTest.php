@@ -55,7 +55,7 @@ class AsJsonTest extends TestCase
 
         $this->assertDatabaseHas(TestUser::class, [
             'id' => 1,
-            'options' => '{"foo":"bar"}'
+            'options' => '{"foo":"bar"}',
         ]);
 
         $this->user->options->set('baz', 'quz');
@@ -64,7 +64,7 @@ class AsJsonTest extends TestCase
 
         $this->assertDatabaseHas(TestUser::class, [
             'id' => 1,
-            'options' => '{"foo":"bar","baz":"quz"}'
+            'options' => '{"foo":"bar","baz":"quz"}',
         ]);
     }
 
@@ -76,7 +76,7 @@ class AsJsonTest extends TestCase
 
         $this->assertDatabaseHas(TestUser::class, [
             'id' => 1,
-            'castable' => '{"foo":"bar"}'
+            'castable' => '{"foo":"bar"}',
         ]);
     }
 
@@ -88,7 +88,7 @@ class AsJsonTest extends TestCase
 
         $this->assertDatabaseHas(TestUser::class, [
             'id' => 1,
-            'options' => '{"foo":"bar"}'
+            'options' => '{"foo":"bar"}',
         ]);
 
         $user = TestUser::find(1);
@@ -125,7 +125,7 @@ class AsJsonTest extends TestCase
 
         $this->assertDatabaseHas(TestUser::class, [
             'id' => 1,
-            'encrypted_options' => 'encrypted_string'
+            'encrypted_options' => 'encrypted_string',
         ]);
 
         $user = TestUser::find(1);
@@ -145,7 +145,7 @@ class AsJsonTest extends TestCase
 
         $this->assertDatabaseHas(TestUser::class, [
             'id' => 1,
-            'nullable_encrypted_options' => null
+            'nullable_encrypted_options' => null,
         ]);
 
         $user = TestUser::find(1);
@@ -155,7 +155,8 @@ class AsJsonTest extends TestCase
 }
 
 /**
- * @method  \Tests\Casts\TestUser find($id)
+ * @method \Tests\Casts\TestUser find($id)
+ *
  * @property \Laragear\Json\Json $options
  * @property \Laragear\Json\Json|null $nullable_options
  * @property \Laragear\Json\Json $encrypted_options
