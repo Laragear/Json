@@ -1,4 +1,6 @@
-<?php /** @noinspection JsonEncodingApiUsageInspection */
+<?php
+
+/** @noinspection JsonEncodingApiUsageInspection */
 
 namespace Tests;
 
@@ -6,6 +8,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use Laragear\Json\Json;
 use PHPUnit\Framework\TestCase;
+
 use function array_merge;
 use function json_encode;
 
@@ -37,7 +40,7 @@ class JsonTest extends TestCase
         static::assertSame('fred', $this->json->get('baz.quuz.quux'));
         static::assertNull($this->json->get('invalid'));
         static::assertSame('foo', $this->json->get('invalid', 'foo'));
-        static::assertSame('foo', $this->json->get('invalid', fn() => 'foo'));
+        static::assertSame('foo', $this->json->get('invalid', fn () => 'foo'));
     }
 
     public function test_get_many(): void
@@ -54,7 +57,7 @@ class JsonTest extends TestCase
 
         static::assertSame(
             ['foo' => 'bar', 'baz.quuz.quux' => 'fred', 'invalid' => 'bar'],
-            $this->json->getMany(['foo', 'baz.quuz.quux', 'invalid'], fn() => 'bar')
+            $this->json->getMany(['foo', 'baz.quuz.quux', 'invalid'], fn () => 'bar')
         );
     }
 
@@ -72,7 +75,7 @@ class JsonTest extends TestCase
         $this->json->setMany([
             'foo' => 'quz',
             'baz.quuz.quux' => 'corge',
-            'fred' => 'thud'
+            'fred' => 'thud',
         ]);
 
         static::assertSame('quz', $this->json->get('foo'));
@@ -94,7 +97,7 @@ class JsonTest extends TestCase
         $this->json->fillMany([
             'foo' => 'quz',
             'baz.quuz.quux' => 'corge',
-            'fred' => 'thud'
+            'fred' => 'thud',
         ]);
         static::assertSame('bar', $this->json->get('foo'));
         static::assertSame('fred', $this->json->get('baz.quuz.quux'));
@@ -234,7 +237,7 @@ class JsonTest extends TestCase
                 ],
             ],
             'invalid' => 'foo',
-        ], $this->json->segments(['foo', 'corge', 'baz.quuz.quux', 'invalid'], fn() => 'foo')->all());
+        ], $this->json->segments(['foo', 'corge', 'baz.quuz.quux', 'invalid'], fn () => 'foo')->all());
     }
 
     public function test_collect(): void
@@ -298,8 +301,12 @@ class JsonTest extends TestCase
 
     public function test_to_array(): void
     {
-        $this->json->set('arrayable', new class implements Arrayable {
-            public function toArray() { return ['foo' => 'bar']; }
+        $this->json->set('arrayable', new class implements Arrayable
+        {
+            public function toArray()
+            {
+                return ['foo' => 'bar'];
+            }
         });
 
         static::assertSame(
@@ -340,7 +347,8 @@ class JsonTest extends TestCase
 
     public function test_from_arrayable(): void
     {
-        $json = Json::make(new class implements Arrayable {
+        $json = Json::make(new class implements Arrayable
+        {
             public function toArray()
             {
                 return ['foo' => 'bar'];

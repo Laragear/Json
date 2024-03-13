@@ -5,6 +5,7 @@ namespace Laragear\Json\Casts;
 use Illuminate\Contracts\Encryption\Encrypter;
 use Illuminate\Database\Eloquent\Model;
 use Laragear\Json\Json;
+
 use function app;
 
 class AsEncryptedJson extends AsJson
