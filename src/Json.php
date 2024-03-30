@@ -14,6 +14,7 @@ use Illuminate\Support\Traits\Tappable;
 use JsonSerializable;
 use Stringable;
 use Symfony\Component\HttpFoundation\ParameterBag;
+
 use function array_key_exists;
 use function array_keys;
 use function array_map;
@@ -139,7 +140,7 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
             }
         }
 
-        return !empty($key);
+        return ! empty($key);
     }
 
     /**
@@ -165,7 +166,7 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
      */
     public function missing(string|int $key): bool
     {
-        return !$this->has($key);
+        return ! $this->has($key);
     }
 
     /**
@@ -207,6 +208,7 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
      * Removes a JSON key.
      *
      * @return $this
+     *
      * @codeCoverageIgnore
      */
     public function unset(string|int $key): static
@@ -227,7 +229,7 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
      */
     public function isNotSet(string|int $key): bool
     {
-        return !$this->isSet($key);
+        return ! $this->isSet($key);
     }
 
     /**
@@ -243,7 +245,7 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
      */
     public function isNotEmpty(): bool
     {
-        return !$this->isEmpty();
+        return ! $this->isEmpty();
     }
 
     /**
