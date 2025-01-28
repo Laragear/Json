@@ -17,7 +17,7 @@ class JsonServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        Request::macro('getJson', function (string|int $key = null, mixed $default = null): mixed {
+        Request::macro('getJson', function (string|int|null $key = null, mixed $default = null): mixed {
             /** @var \Illuminate\Http\Request $this */
 
             // This will instance the JSON property of the Request to avoid duplicating the
