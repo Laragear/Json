@@ -293,7 +293,7 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
     /**
      * Returns a Json instance as a Collection.
      */
-    public function collect(string|int $key = null): Collection
+    public function collect(string|int|null $key = null): Collection
     {
         return new Collection($this->get($key));
     }
@@ -437,7 +437,7 @@ class Json extends ParameterBag implements Stringable, ArrayAccess, JsonSerializ
     /**
      * @inheritDoc
      */
-    public function all(string $key = null): array
+    public function all(?string $key = null): array
     {
         return (array) $this->get($key);
     }
