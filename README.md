@@ -27,7 +27,7 @@ Your support allows me to keep this package free, up-to-date and maintainable. A
 
 ## Requirements
 
-* Laravel 10 or later
+* Laravel 11 or later
 
 ## Installation
 
@@ -74,7 +74,7 @@ public function data(Request $request)
 >
 > You can still use the `json()` method to retrieve the JSON data as a `ParameterBag` or a key value.
 
-## As a HTTP Response
+## As an HTTP Response
 
 You can build a `Json` instance using `make()`, optionally with your own `array`, but you can also use anything that implements the `Arrayable` contract or is _iterable_. Since the `Json` instance implements the `Responsable` trait, you can return it as-is and will be automatically transformed into a [JSON response](https://laravel.com/docs/10.x/responses#json-responses).
 
@@ -227,4 +227,4 @@ If you discover any security related issues, please email darkghosthunter@gmail.
 
 This specific package version is licensed under the terms of the [MIT License](LICENSE.md), at time of publishing.
 
-[Laravel](https://laravel.com) is a Trademark of [Taylor Otwell](https://github.com/TaylorOtwell/). Copyright © 2011-2023 Laravel LLC.
+[Laravel](https://laravel.com) is a Trademark of [Taylor Otwell](https://github.com/TaylorOtwell/). Copyright © 2011-2025 Laravel LLC.

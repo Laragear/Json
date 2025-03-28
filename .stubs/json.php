@@ -7,9 +7,11 @@ namespace Illuminate\Http
         /**
          * Returns a Json instance from the Request JSON input, or a key value.
          *
+         * @template TDefault
+         *
          * @param  string|int|null  $key
-         * @param  mixed|null  $default
-         * @return \Laragear\Json\Json|mixed
+         * @param  TDefault|null  $default
+         * @return \Laragear\Json\Json|mixed|TDefault
          */
         public function getJson(string|int $key = null, mixed $default = null): mixed
         {
