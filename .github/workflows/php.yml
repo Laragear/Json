@@ -83,7 +83,7 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          slug: Laragear/WebAuthn
+          slug: Laragear/Json
 
   static_analysis:
     name: 3️⃣ Static Analysis
