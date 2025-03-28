@@ -3,7 +3,7 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/laragear/json.svg)](https://packagist.org/packages/laragear/json)
 [![Latest stable test run](https://github.com/Laragear/Json/workflows/Tests/badge.svg)](https://github.com/Laragear/MailLogin/actions)
 [![Codecov coverage](https://codecov.io/gh/Laragear/Json/branch/1.x/graph/badge.svg?token=2zE6lKWyvO)](https://codecov.io/gh/Laragear/Json)
-[![CodeClimate Maintainability](https://api.codeclimate.com/v1/badges/fb8c25c8dea86186e1f0/maintainability)](https://codeclimate.com/github/Laragear/Json/maintainability)
+[![Maintainability](https://qlty.sh/badges/a2094aec-140b-4b55-bdd1-c0f14189dbf7/maintainability.svg)](https://qlty.sh/gh/Laragear/projects/Json)
 [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=Laragear_Json&metric=alert_status)](https://sonarcloud.io/dashboard?id=Laragear_Json)
 [![Laravel Octane Compatibility](https://img.shields.io/badge/Laravel%20Octane-Compatible-success?style=flat&logo=laravel)](https://laravel.com/docs/10.x/octane#introduction)
 
