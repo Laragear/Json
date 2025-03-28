@@ -4,9 +4,7 @@ namespace Laragear\Json;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
-use Laragear\Json\Http\Requests\RequestJson;
 use Symfony\Component\HttpFoundation\ParameterBag;
-use function app;
 
 class JsonServiceProvider extends ServiceProvider
 {
@@ -23,7 +21,7 @@ class JsonServiceProvider extends ServiceProvider
             // This will instance the JSON property of the Request to avoid duplicating the
             // JSON data, or replacing the JSON if the developer has edited it. Since the
             // Json class extends ParameterBag, there isn't any incompatibility risks.
-            if (!$this->json instanceof Json) { // @phpstan-ignore-line
+            if (! $this->json instanceof Json) { // @phpstan-ignore-line
                 $this->json = $this->json instanceof ParameterBag // @phpstan-ignore-line
                     ? Json::make($this->json->all()) // @phpstan-ignore-line
                     : Json::fromJson($this->getContent());
