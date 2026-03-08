@@ -22,12 +22,12 @@
         "issues": "https://github.com/Laragear/Json/issues"
     },
     "require": {
-        "php": "^8.2",
-        "illuminate/support": "11.*|12.*",
-        "illuminate/http": "11.*|12.*"
+        "php": "^8.3",
+        "illuminate/support": "12.*|13.*",
+        "illuminate/http": "12.*|13.*"
     },
     "require-dev": {
-        "orchestra/testbench": "9.*|10.*"
+        "orchestra/testbench": "10.*|11.*"
     },
     "autoload": {
         "psr-4": {

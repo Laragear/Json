@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class JsonServiceProvider extends ServiceProvider
 {
-    public const STUBS = __DIR__.'/../.stubs/json.php';
+    public const string STUBS = __DIR__.'/../.stubs/json.php';
 
     /**
      * Register any application services.
